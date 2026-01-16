@@ -6,18 +6,28 @@ PREFIX?=/usr/local
 BIN_DIR?=$(PREFIX)/bin
 BUILD_OUTPUT?=.build/release/send2trash
 
+# SwiftPM uses sandbox-exec on macOS for manifest evaluation/plugins.
+# In some environments (notably when the parent process is sandboxed),
+# sandbox-exec can fail with "sandbox_apply: Operation not permitted".
+# Homebrew already sandboxes builds, so we disable SwiftPM's sandbox when
+# building under Homebrew.
+SWIFT_BUILD_FLAGS?=
+ifneq ($(HOMEBREW_PREFIX),)
+SWIFT_BUILD_FLAGS+=--disable-sandbox
+endif
+
 .PHONY: all build run install test smoke-test docs clean
 
 all: build
 
 build:
-	$(SWIFT_BUILD)
+	$(SWIFT_BUILD) $(SWIFT_BUILD_FLAGS)
 
 run:
 	$(SWIFT_RUN) send2trash
 
 install:
-	$(SWIFT_BUILD) -c release
+	$(SWIFT_BUILD) -c release $(SWIFT_BUILD_FLAGS)
 	install -d "$(BIN_DIR)"
 	install "$(BUILD_OUTPUT)" "$(BIN_DIR)/send2trash"
 
