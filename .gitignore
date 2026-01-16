@@ -4,6 +4,7 @@ hobo*
 trash
 test
 trash.1
+send2trash.1
 .DS_Store
 .build/
 .swiftpm/

@@ -19,6 +19,26 @@
             "target": "trash",
             "configuration": "release",
             "preLaunchTask": "swift: Build Release trash"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:trash-swift}",
+            "name": "Debug send2trash",
+            "target": "send2trash",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug send2trash"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:trash-swift}",
+            "name": "Release send2trash",
+            "target": "send2trash",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release send2trash"
         }
     ]
 }

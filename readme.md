@@ -4,7 +4,7 @@ This repository is a modern Swift port of the original Objective‑C CLI app. Th
 
 ## Purpose
 
-`trash` is a small command-line program for macOS that moves files or folders to the trash.
+`send2trash` is a small command-line program for macOS that moves files or folders to the trash (renamed from `trash` to avoid Homebrew conflicts).
 
 ## TODO (Porting Progress)
 
@@ -19,7 +19,7 @@ This repository is a modern Swift port of the original Objective‑C CLI app. Th
 - [x] Implement folder size aggregation and formatting.
 - [x] Add unit tests (core helpers).
 - [x] Add smoke/integration tests (gated by TRASH_INTEGRATION=1).
-- [ ] Update man page + release docs.
+- [x] Update man page + release docs.
 
 ## Copyright
 
@@ -36,16 +36,15 @@ See [my blog post][post] for more info on some initial implementation details an
 
 ## Installing
 
-Via [Homebrew]:
+SwiftPM (local build):
 
-    brew install trash
+    $ make build
+    $ make install
 
-Manually:
+Man page (optional):
 
-    $ make
-    $ cp trash /usr/local/bin/
     $ make docs
-    $ cp trash.1 /usr/local/share/man/man1/
+    $ cp send2trash.1 /usr/local/share/man/man1/
 
 
 [Homebrew]: http://brew.sh
@@ -53,7 +52,7 @@ Manually:
 
 ## The “put back” feature
 
-By default, `trash` uses the low-level system API to move the specified files/folders to the trash. If you want `trash` to ask Finder to perform the trashing (e.g. to ensure that the _"put back"_ feature works), supply the `-F` argument.
+By default, `send2trash` uses the low-level system API to move the specified files/folders to the trash. If you want `send2trash` to ask Finder to perform the trashing (e.g. to ensure that the _"put back"_ feature works), supply the `-F` argument.
 
 
 

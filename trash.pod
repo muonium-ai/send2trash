@@ -1,0 +1,64 @@
+=encoding utf8
+
+=head1 NAME
+
+B<send2trash> -- move files/folders to the macOS trash
+
+=head1 SYNOPSIS
+
+=over 10
+
+=item B<send2trash>
+
+[B<-vlesyF>] I<file> I<...>
+
+=back
+
+=head1 DESCRIPTION
+
+B<send2trash> moves the specified files and/or folders to the system trash.
+
+The options are as follows:
+
+=over 12
+
+=item B<-v>
+
+Be verbose when moving items to the trash, showing them as they are moved.
+
+=item B<-F>
+
+Ask Finder to move the files to the trash, instead of using the system API. This is slower, but it utilizes Finder's UI (e.g. sounds) and ensures that the "put back" feature works.
+
+=item B<-l>
+
+List items currently in the trash. If this argument is used, no files need to be specified.
+
+=item B<-e>
+
+Empty the trash. B<send2trash> asks for confirmation before executing this action. If this argument is used, no files need to be specified.
+
+=item B<-s>
+
+Securely empty the trash. B<send2trash> asks for confirmation before executing this action. If this argument is used, no files need to be specified.
+
+=item B<-y>
+
+Skips the confirmation prompt for B<-e> and B<-s>. CAUTION: Deletes permanently instantly.
+
+=back
+
+=head1 SEE ALSO
+
+rm(1)
+
+=head1 AUTHORS
+
+Original Objective‑C implementation by Ali Rantakari (http://hasseg.org/trash)
+
+Swift port by Senthil Nayagam (2026)
+
+=head1 COPYRIGHT
+
+Copyright (c) 2010–2018 Ali Rantakari
+Copyright (c) 2026 Senthil Nayagam

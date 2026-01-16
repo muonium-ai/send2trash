@@ -11,8 +11,9 @@ public struct TrashCLI {
     public static func run(arguments: [String]) -> Int {
         let argv = arguments
         let basename = (argv.first ?? "trash") as NSString
+        let commandName = basename.lastPathComponent
         if argv.count == 1 {
-            printUsage(basename: basename.lastPathComponent)
+            printUsage(basename: commandName)
             return 0
         }
 
@@ -72,7 +73,7 @@ public struct TrashCLI {
                 }
                 return 0
             } catch {
-                printErr("trash: \(error.localizedDescription)\n")
+                printErr("\(commandName): \(error.localizedDescription)\n")
                 return 1
             }
         }
@@ -113,7 +114,7 @@ public struct TrashCLI {
                 try emptyTrash(securely: argEmptySecurely)
                 return 0
             } catch {
-                printErr("trash: \(error.localizedDescription)\n")
+                printErr("\(commandName): \(error.localizedDescription)\n")
                 return 1
             }
         }
@@ -126,12 +127,12 @@ public struct TrashCLI {
         for rawPath in paths {
             let expandedPath = (rawPath as NSString).expandingTildeInPath
             if expandedPath.isEmpty {
-                printErr("trash: \(rawPath): invalid path\n")
+                printErr("\(commandName): \(rawPath): invalid path\n")
                 continue
             }
 
             if !fileExistsNoFollowSymlink(expandedPath) {
-                printErr("trash: \(rawPath): path does not exist\n")
+                printErr("\(commandName): \(rawPath): path does not exist\n")
                 exitValue = 1
                 continue
             }
@@ -148,7 +149,7 @@ public struct TrashCLI {
                 pathsForFinder.append(expandedPath)
             } catch {
                 exitValue = 1
-                printErr("trash: \(rawPath): can not move to trash (\(error.localizedDescription))\n")
+                printErr("\(commandName): \(rawPath): can not move to trash (\(error.localizedDescription))\n")
             }
         }
 
@@ -158,9 +159,9 @@ public struct TrashCLI {
             if status != noErr {
                 exitValue = 1
                 if status == kHGNotAllFilesTrashedError {
-                    printErr("trash: some files were not moved to trash (authentication cancelled?)\n")
+                    printErr("\(commandName): some files were not moved to trash (authentication cancelled?)\n")
                 } else {
-                    printErr("trash: error \(status)\n")
+                    printErr("\(commandName): error \(status)\n")
                 }
             } else if argVerbose {
                 for path in pathsForFinder { printOut("\(path)\n") }
@@ -386,22 +387,35 @@ private func askFinderToMoveFilesToTrash(_ filePaths: [String], bringFinderToFro
 }
 
 private func listTrashContents() throws -> [String] {
-    let script = "tell application \"Finder\" to get POSIX path of every item of trash"
-    let result = try runAppleScript(script)
-    guard let result = result else { return [] }
+    do {
+        let script = "tell application \"Finder\" to get (POSIX path of (every item of trash))"
+        let result = try runAppleScript(script)
+        guard let result = result else { return [] }
 
-    var paths: [String] = []
-    if result.descriptorType == typeAEList {
-        for idx in 1...result.numberOfItems {
-            if let item = result.atIndex(idx)?.stringValue {
-                paths.append(item)
+        var paths: [String] = []
+        if result.descriptorType == typeAEList {
+            for idx in 1...result.numberOfItems {
+                if let item = result.atIndex(idx)?.stringValue {
+                    paths.append(item)
+                }
             }
+        } else if let single = result.stringValue {
+            paths.append(single)
         }
-    } else if let single = result.stringValue {
-        paths.append(single)
-    }
 
-    return paths
+        return paths
+    } catch {
+        return listTrashContentsFallback()
+    }
+}
+
+private func listTrashContentsFallback() -> [String] {
+    let fm = FileManager.default
+    guard let trashURL = try? fm.url(for: .trashDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else {
+        return []
+    }
+    let contents = (try? fm.contentsOfDirectory(at: trashURL, includingPropertiesForKeys: nil, options: [])) ?? []
+    return contents.map { $0.path }
 }
 
 private func emptyTrash(securely: Bool) throws {

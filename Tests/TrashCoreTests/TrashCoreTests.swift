@@ -39,7 +39,7 @@ final class TrashCoreTests: XCTestCase {
         let fileURL = tempDir.appendingPathComponent("trash_smoke_\(UUID().uuidString)")
         try "smoke".data(using: .utf8)?.write(to: fileURL)
 
-        let exitCode = TrashCLI.run(arguments: ["trash", fileURL.path])
+        let exitCode = TrashCLI.run(arguments: ["send2trash", fileURL.path])
         XCTAssertEqual(exitCode, 0)
         XCTAssertFalse(fileExistsNoFollowSymlink(fileURL.path))
     }

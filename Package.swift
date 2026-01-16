@@ -7,7 +7,7 @@ let package = Package(
         .macOS(.v12)
     ],
     products: [
-        .executable(name: "trash", targets: ["TrashCLI"])
+        .executable(name: "send2trash", targets: ["TrashCLI"])
     ],
     targets: [
         .target(
