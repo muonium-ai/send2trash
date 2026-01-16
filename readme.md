@@ -18,7 +18,7 @@ This repository is a modern Swift port of the original Objective‑C CLI app. Th
 - [x] Implement list/empty/secure empty flows.
 - [x] Implement folder size aggregation and formatting.
 - [x] Add unit tests (core helpers).
-- [ ] Add smoke/integration tests.
+- [x] Add smoke/integration tests (gated by TRASH_INTEGRATION=1).
 - [ ] Update man page + release docs.
 
 ## Copyright

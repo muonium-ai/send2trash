@@ -6,7 +6,7 @@ PREFIX?=/usr/local
 BIN_DIR?=$(PREFIX)/bin
 BUILD_OUTPUT?=.build/release/trash
 
-.PHONY: all build run install test clean
+.PHONY: all build run install test smoke-test clean
 
 all: build
 
@@ -23,6 +23,9 @@ install:
 
 test:
 	swift test
+
+smoke-test:
+	TRASH_INTEGRATION=1 swift test
 
 clean:
 	swift package clean

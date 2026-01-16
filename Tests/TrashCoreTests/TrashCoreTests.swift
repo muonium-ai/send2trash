@@ -29,4 +29,18 @@ final class TrashCoreTests: XCTestCase {
 
         XCTAssertEqual(getAbsolutePath(relative), expectedStandardized)
     }
+
+    func testTrashCLITrashesFileIntegration() throws {
+        if ProcessInfo.processInfo.environment["TRASH_INTEGRATION"] != "1" {
+            throw XCTSkip("Set TRASH_INTEGRATION=1 to run smoke/integration tests.")
+        }
+
+        let tempDir = FileManager.default.temporaryDirectory
+        let fileURL = tempDir.appendingPathComponent("trash_smoke_\(UUID().uuidString)")
+        try "smoke".data(using: .utf8)?.write(to: fileURL)
+
+        let exitCode = TrashCLI.run(arguments: ["trash", fileURL.path])
+        XCTAssertEqual(exitCode, 0)
+        XCTAssertFalse(fileExistsNoFollowSymlink(fileURL.path))
+    }
 }
