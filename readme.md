@@ -39,7 +39,7 @@ See [my blog post][post] for more info on some initial implementation details an
 Homebrew:
 
     $ brew tap muonium-ai/send2trash
-    $ brew install trash
+    $ brew install send2trash
 
 SwiftPM (local build):
 
