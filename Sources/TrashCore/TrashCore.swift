@@ -4,9 +4,9 @@ import Foundation
 import Security
 
 public struct TrashCLI {
-    private static let versionMajor = 0
-    private static let versionMinor = 9
-    private static let versionBuild = 2
+    private static let versionMajor = 1
+    private static let versionMinor = 0
+    private static let versionBuild = 0
 
     public static func run(arguments: [String]) -> Int {
         let argv = arguments
@@ -200,6 +200,7 @@ public struct TrashCLI {
         printOut("\n")
         printOut("Version \(versionNumber())\n")
         printOut("Copyright (c) 2010–2018 Ali Rantakari, http://hasseg.org/trash\n")
+        printOut("Copyright (c) 2026 Senthil Nayagam\n")
         printOut("\n")
     }
 }
