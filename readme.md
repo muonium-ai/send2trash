@@ -1,6 +1,32 @@
-# Trash
+# Trash (Swift Port)
 
-This is a small command-line program for OS X that moves files or folders to the trash.
+This repository is a modern Swift port of the original Objective‑C CLI app. The legacy implementation is preserved as a read‑only archive in [obj-c/](obj-c/).
+
+## Purpose
+
+`trash` is a small command-line program for macOS that moves files or folders to the trash.
+
+## TODO (Porting Progress)
+
+- [ ] Decide target macOS + Swift versions.
+- [ ] Create SwiftPM package structure.
+- [ ] Port CLI parsing and help output.
+- [ ] Port stdout/stderr utilities + verbose logging.
+- [ ] Implement file existence checks (no leaf symlink follow).
+- [ ] Implement standard trashing (FileManager).
+- [ ] Implement Finder-based trashing ("put back" support).
+- [ ] Implement list/empty/secure empty flows.
+- [ ] Implement folder size aggregation and formatting.
+- [ ] Add tests (unit + smoke).
+- [ ] Update man page + release docs.
+
+## Copyright
+
+Original Objective‑C implementation:
+- Copyright (c) 2010–2018 Ali Rantakari
+
+Swift port:
+- Copyright (c) 2026 Senthil Nayagam
 
 See [my blog post][post] for more info on some initial implementation details and design decisions.
 
