@@ -16,6 +16,13 @@ ifneq ($(HOMEBREW_PREFIX),)
 SWIFT_BUILD_FLAGS+=--disable-sandbox
 endif
 
+# Homebrew invokes `make install PREFIX=/opt/homebrew/Cellar/...`.
+# Some environments don't export HOMEBREW_PREFIX into the build, so also
+# detect Homebrew via the install PREFIX.
+ifneq (,$(findstring /Cellar/,$(PREFIX)))
+SWIFT_BUILD_FLAGS+=--disable-sandbox
+endif
+
 .PHONY: all build run install test smoke-test docs clean
 
 all: build
